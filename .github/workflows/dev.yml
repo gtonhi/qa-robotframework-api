@@ -1,0 +1,62 @@
+name: CI - Ambiente Dev
+
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
+  workflow_dispatch:
+
+jobs:
+  testes-api:
+    name: Testes de API (dev)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Definir ID de execução rastreável
+        run: echo "EXECUCAO_ID=${{ github.run_number }}-${{ github.run_id }}" >> "$GITHUB_ENV"
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Instalar dependências
+        run: pip install -r requirements.txt
+
+      - name: Executar testes de API
+        run: |
+          robot \
+            --outputdir results \
+            --output "output-${EXECUCAO_ID}.xml" \
+            --log "log-${EXECUCAO_ID}.html" \
+            --report "report-${EXECUCAO_ID}.html" \
+            --metadata "Execucao_ID:${EXECUCAO_ID}" \
+            --metadata "Ambiente:dev" \
+            --metadata "Commit:${GITHUB_SHA}" \
+            tests/api/
+
+      - name: Publicar resumo da execução
+        if: always()
+        run: |
+          {
+            echo "## Relatório de testes — ambiente dev"
+            echo ""
+            echo "- **ID de execução:** \`${EXECUCAO_ID}\`"
+            echo "- **Commit:** \`${GITHUB_SHA}\`"
+            echo "- **Disparado por:** ${GITHUB_ACTOR}"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Publicar relatório como artefato
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: relatorio-dev-${{ env.EXECUCAO_ID }}
+          path: results/
+          retention-days: 30
