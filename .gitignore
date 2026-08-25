@@ -1,0 +1,12 @@
+# Resultados de execução do Robot Framework — gerados a cada run, não versionamos
+output.xml
+log.html
+report.html
+
+# Cache Python
+__pycache__/
+*.pyc
+
+# Ambiente virtual
+.venv/
+venv/
