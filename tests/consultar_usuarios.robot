@@ -5,19 +5,29 @@ Suite Setup      Criar Sessão Da API
 
 *** Test Cases ***
 CT-001 - Validar consulta de usuários realizada com sucesso
-    Quando eu consultar os usuários
-    Então a chamada deve retornar 200
+    Quando Eu Consultar Os Usuários
+    Então A Chamada Deve Retornar 200
 
 CT-002 - Validar consulta de usuários retornando estrutura esperada no corpo
-    Quando eu consultar os usuários
-    Então a chamada deve retornar 200
-    Então a resposta deve conter quantidade e lista de usuários
+    Quando Eu Consultar Os Usuários
+    Então A Chamada Deve Retornar 200
+    Então A Resposta Deve Conter Quantidade E Lista De Usuários
 
 CT-003 - Validar consulta de usuário por ID existente
-    Quando eu consultar um usuário existente
-    Então a chamada deve retornar 200
+    Quando Eu Consultar Um Usuário Existente
+    Então A Chamada Deve Retornar 200
 
 CT-004 - Validar consulta de usuário por ID inexistente
-    Quando eu consultar um usuário com ID inexistente
-    Então a chamada deve retornar 400
-    Então a resposta deve conter a mensagem    Usuário não encontrado
+    Quando Eu Consultar Um Usuário Com ID Inexistente
+    Então A Chamada Deve Retornar 400
+    Então A Resposta Deve Conter A Mensagem    Usuário não encontrado
+
+CT-005 - Validar filtro de usuários por nome existente
+    Quando Eu Filtrar Usuários Por Um Nome Existente
+    Então A Chamada Deve Retornar 200
+    Então A Resposta Deve Conter Ao Menos Um Usuário
+
+CT-006 - Validar filtro de usuários por nome inexistente
+    Quando Eu Filtrar Usuários Por Um Nome Inexistente
+    Então A Chamada Deve Retornar 200
+    Então A Resposta Deve Conter Uma Lista Vazia De Usuários
